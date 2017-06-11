@@ -92,9 +92,6 @@ module.exports = {
         "from": {
           "after": true
         },
-        "if": {
-          "after": true
-        },
         "import": {
           "after": true
         },
