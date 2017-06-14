@@ -1,6 +1,6 @@
 import Ember from 'ember';
-const { service } = Ember.inject,
-      { log } = Ember.Logger;
+const { service } = Ember.inject /* ,
+      { log } = Ember.Logger */;
 
 export default Ember.Component.extend({
   // attributes
