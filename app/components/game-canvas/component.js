@@ -25,17 +25,19 @@ export default Ember.Component.extend({
   },
   // functions
   aiMove() {
-    const bY = this.get('ballCenterY'),
-          speed = this.get('aiPaddleSpeed');
     let aiC = this.get('aiPaddleY');
+    const bY = this.get('ballCenterY'),
+          speed = this.get('aiPaddleSpeed') * Math.abs((aiC - bY) / 100);
 
-    switch(true) {
-      case aiC < bY:
-        aiC += speed;
-        break;
-      case aiC > bY:
-        aiC -= speed;
-        break;
+    if(this.get('ballCenterX') >= this.get('width') * 0.75) {
+      switch(true) {
+        case aiC < bY:
+          aiC += speed;
+          break;
+        case aiC > bY:
+          aiC -= speed;
+          break;
+      }
     }
 
     switch(true) {
@@ -69,6 +71,13 @@ export default Ember.Component.extend({
   },
   ballSetup() {
     this.set('ballRadius', 10);
+
+    // bounce counts prevent the ball from getting stuck
+    // on an edge of the screen if its impact speed takes
+    // it too far past the boundary for a single frame
+    // and the randomized speed to bring it back
+    this.set('bounceCountY', 0);
+    this.set('bounceCountX', 0);
 
     this.ballReset();
   },
@@ -139,7 +148,9 @@ export default Ember.Component.extend({
     ctx.fillRect(left, top, width, height);
   },
   movement() {
-    const speedX = this.get('ballSpeedX'),
+    const bounceCountX = this.get('bounceCountX'),
+          bounceCountY = this.get('bounceCountY'),
+          speedX = this.get('ballSpeedX'),
           speedY = this.get('ballSpeedY');
     let bX = parseInt(this.get('ballCenterX')),
         bY = parseInt(this.get('ballCenterY'));
@@ -153,41 +164,57 @@ export default Ember.Component.extend({
     bY = this.get('ballCenterY');
 
     switch(true) {
-      case bX <= 0: {
+      case bX - this.get('ballRadius') <= 0: {
         const playerPaddleBottom = this.get('playerPaddleY') + this.get('paddleHeight'),
               playerPaddleTop = this.get('playerPaddleY');
 
-        if(!(bY <= playerPaddleBottom && bY >= playerPaddleTop)) {
+        if(!(bY - this.get('ballRadius') <= playerPaddleBottom && bY + this.get('ballRadius') >= playerPaddleTop)) {
           this.ballReset();
           this.score('ai');
         }
 
-        this.set('ballSpeedX', (speedX > 0 ? -1 : 1) * this.randomizeSpeed());
+        if(bounceCountX === 0) {
+          this.set('ballSpeedX', (speedX > 0 ? -1 : 1) * this.randomizeSpeed());
+        }
 
+        this.set('bounceCountX', bounceCountX + 1);
         break;
       }
-      case bX >= this.get('width'): {
+      case bX + this.get('ballRadius') >= this.get('width'): {
         const aiPaddleBottom = this.get('aiPaddleY') + this.get('paddleHeight'),
               aiPaddleTop = this.get('aiPaddleY');
 
-        if(!(bY <= aiPaddleBottom && bY >= aiPaddleTop)) {
+        if(!(bY - this.get('ballRadius') <= aiPaddleBottom && bY + this.get('ballRadius') >= aiPaddleTop)) {
           this.ballReset();
           this.score('player');
         }
 
-        this.set('ballSpeedX', (speedX > 0 ? -1 : 1) * this.randomizeSpeed());
+        if(bounceCountX === 0) {
+          this.set('ballSpeedX', (speedX > 0 ? -1 : 1) * this.randomizeSpeed());
+        }
 
+        this.set('bounceCountX', bounceCountX + 1);
         break;
       }
+      default: this.set('bounceCountX', 0);
     }
 
     switch(true) {
-      case bY <= 0:
-        this.set('ballSpeedY', (speedY > 0 ? -1 : 1) * this.randomizeSpeed());
+      case bY - this.get('ballRadius') <= 0:
+        if(bounceCountY === 0) {
+          this.set('ballSpeedY', (speedY > 0 ? -1 : 1) * this.randomizeSpeed());
+        }
+
+        this.set('bounceCountY', bounceCountY + 1);
         break;
-      case bY >= this.get('height'):
-        this.set('ballSpeedY', (speedY > 0 ? -1 : 1) * this.randomizeSpeed());
+      case bY + this.get('ballRadius') >= this.get('height'):
+        if(bounceCountY === 0) {
+          this.set('ballSpeedY', (speedY > 0 ? -1 : 1) * this.randomizeSpeed());
+        }
+
+        this.set('bounceCountY', bounceCountY + 1);
         break;
+      default: this.set('bounceCountY', 0);
     }
   },
   playerSetup() {
