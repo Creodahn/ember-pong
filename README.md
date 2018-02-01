@@ -1,4 +1,5 @@
 # ember-pong
+[![Build Status](https://travis-ci.org/Creodahn/ember-pong.svg?branch=master)](https://travis-ci.org/Creodahn/ember-pong)
 
 This README outlines the details of collaborating on this Ember application.
 A short introduction of this app could easily go here.
