@@ -1,4 +1,6 @@
 # ember-pong
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Creodahn/ember-pong.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/Creodahn/ember-pong.svg?branch=master)](https://travis-ci.org/Creodahn/ember-pong)
 
 This README outlines the details of collaborating on this Ember application.
