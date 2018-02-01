@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import Service from '@ember/service';
+import $ from 'jquery';
 
-export default Ember.Service.extend({
+export default Service.extend({
   bindToMouse(id) {
     $(`#${id}`).get(0).addEventListener('mousemove', (e) => {
       const canvas = $(`#${id}`);

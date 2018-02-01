@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+import $ from 'jquery';
 
 export function moveX(params/* , hash */) {
   const item = $(`#${params[0]}`).get(0),
@@ -7,4 +8,4 @@ export function moveX(params/* , hash */) {
   item.left = left + params[1];
 }
 
-export default Ember.Helper.helper(moveX);
+export default helper(moveX);

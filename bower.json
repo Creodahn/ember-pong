@@ -1,6 +1,0 @@
-{
-  "name": "ember-pong",
-  "dependencies": {
-    "semantic-ui": "^2.2.10"
-  }
-}

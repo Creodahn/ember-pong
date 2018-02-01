@@ -1,14 +1,15 @@
-import Ember from 'ember';
-const { service } = Ember.inject /* ,
-      { log } = Ember.Logger */;
+import { scheduleOnce } from '@ember/runloop';
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+import $ from 'jquery';
 
-export default Ember.Component.extend({
+export default Component.extend({
   // attributes
   movePaddle: service(),
   tagName: '',
   // lifecycle hooks
   didInsertElement() {
-    Ember.run.scheduleOnce('afterRender', () => {
+    scheduleOnce('afterRender', () => {
       const canvas = $(`#${this.get('id')}`)[0],
             canvasContext = canvas.getContext('2d');
 
