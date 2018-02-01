@@ -1,9 +1,7 @@
-/* eslint-env node */
-
 module.exports = function(environment) {
-  var ENV = {
-    modulePrefix: 'udemy-js-game',
-    environment: environment,
+  const ENV = {
+    modulePrefix: 'ember-pong',
+    environment,
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
