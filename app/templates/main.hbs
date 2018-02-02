@@ -1,9 +1,22 @@
-{{game-canvas
-  id="game-canvas"
-  height=600
-  fps=60
-  paddleHeight=100
-  paddleWidth=10
-  speed=5
-  width=800
-}}
+<section class="container game-cabinet-face">
+  <div class="row align-items-center justify-content-center">
+    <div class="col">
+      <header class="cabinet-header row justify-content-center">
+        PONG
+      </header>
+      <div class="row justify-content-center">
+        <div class="screen-border">
+          {{game-canvas
+            id="game-canvas"
+            height=600
+            fps=60
+            paddleHeight=100
+            paddleWidth=10
+            speed=5
+            width=800
+          }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

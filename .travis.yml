@@ -21,3 +21,7 @@ install:
 - yarn install --non-interactive
 script:
 - ember build --prod
+deploy:
+  provider: surge
+  project: ./dist
+  domain: ember-pong.surge.sh

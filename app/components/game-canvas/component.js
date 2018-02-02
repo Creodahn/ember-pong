@@ -2,6 +2,7 @@ import { scheduleOnce } from '@ember/runloop';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import $ from 'jquery';
+import padScore from 'ember-pong/utils/pad-score';
 
 export default Component.extend({
   // attributes
@@ -86,8 +87,8 @@ export default Component.extend({
     const ctx = this.get('context'),
           label = `${player}Score`;
 
-    ctx.font = '40px arial';
-    ctx.fillText(this.get(label), this.get(`${label}X`), this.get(`${label}Y`));
+    ctx.font = '40px \'Press Start 2P\'';
+    ctx.fillText(padScore(this.get(label)), this.get(`${label}X`), this.get(`${label}Y`));
   },
   drawCanvas() {
     const halfHeight = this.get('paddleHeight') / 2,
@@ -106,7 +107,7 @@ export default Component.extend({
     }
 
     // draw background
-    this.drawRectangle(0, 0, this.get('width'), this.get('height'), 'black');
+    this.drawRectangle(0, 0, this.get('width'), this.get('height'), '#7a857a');
 
     // draw the net
     this.drawNet();
@@ -221,7 +222,7 @@ export default Component.extend({
   playerSetup() {
     this.get('movePaddle').bindToMouse(this.get('id'));
     this.set('playerScore', 0);
-    this.set('playerScoreX', 100);
+    this.set('playerScoreX', 30);
     this.set('playerScoreY', 100);
   },
   randomizeSpeed() {
