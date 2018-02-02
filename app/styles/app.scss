@@ -23,10 +23,9 @@ body {
   padding: 50px 0;
   z-index: 1;
 
-  &::after,
   &::before {
-    border-top-color: yellow;
-    border-top-width: 895px;
+    background-color: yellow;
+    box-shadow: 0 0 0 10px #000;
   }
 }
 
@@ -34,22 +33,17 @@ body {
 .screen-border {
   position: relative;
 
-  &::after,
+  // &::after,
   &::before {
-    border-top-style: solid;
+    bottom: 0;
     content: '';
+    left: 0;
     position: absolute;
-    top: 0;
-  }
-
-  &::after {
-    border-right: 150px solid transparent;
-    left: 100%;
-  }
-
-  &::before {
-    border-left: 150px solid transparent;
-    right: 100%;
+    right: 0;
+    top: 100px;
+    transform: perspective(300px) rotateX(-5deg);
+    transform-origin: bottom;
+    z-index: -1;
   }
 }
 
@@ -58,9 +52,7 @@ body {
   padding: 30px;
   z-index: 2;
 
-  &::after,
   &::before {
-    border-top-color: #000;
-    border-top-width: 685px;
+    background: #000;
   }
 }
