@@ -1,9 +1,15 @@
-@import 'ember-bootstrap/bootstrap';
+@import 'variables';
+@import 'functions';
+@import 'mixins';
+@import 'ember-cli-bootstrap-4/bootstrap';
 @import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+@import 'fireworks';
 
 body {
-  background-color: #cc8236;
-  background-image: url('/assets/images/wood.png');
+  &.ember-application {
+    background-color: #cc8236;
+    background-image: url('/assets/images/wood.png');
+  }
 }
 
 .cabinet-header {
@@ -56,3 +62,5 @@ body {
     background: #000;
   }
 }
+
+@import "ember-cli-bootstrap-4/bootstrap";

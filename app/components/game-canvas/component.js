@@ -29,10 +29,10 @@ export default Component.extend({
     this.set('context', canvasContext);
     this.playerSetup();
 
-    setInterval(() => {
+    this.set('timer', setInterval(() => {
       this.movement();
       this.drawCanvas();
-    }, 1000 / this.get('fps'));
+    }, 1000 / this.get('fps')));
   },
   // functions
   aiMove() {
@@ -67,7 +67,7 @@ export default Component.extend({
     this.set('aiPaddleY', this.get('height') / 2 - this.get('paddleHeight') / 2);
     this.set('aiPaddleLeft', this.get('width') - this.get('paddleWidth'));
     this.set('aiPaddleSpeed', 6);
-    this.set('aiScore', 9);
+    this.set('aiScore', 0);
     this.set('aiScoreX', this.get('width') - 100);
     this.set('aiScoreY', 100);
   },
@@ -250,11 +250,11 @@ export default Component.extend({
     }
   },
   stopGame(player) {
-    this.set('fps', 0);
     this.set('ballCenterX', this.get('courtCenterX'));
     this.set('ballCenterY', this.get('courtCenterY'));
     this.set('ballSpeedX', 0);
     this.set('ballSpeedY', 0);
+    clearInterval(this.get('timer'));
     this.win(player);
   }
 });

@@ -4,20 +4,20 @@
       <div class="loading">
         <div></div>
       </div>
-      {{#if hide-header}}
-      {{else}}
+      {{#unless hide-header}}
         <div class="modal-header">
-          {{#if static-backdrop}}
-          {{else}}
+          {{#if modal-title}}
+            <h4 id="{{modal-id}}-title" class="modal-title {{modal-title-classes}}">
+              {{modal-title}}
+            </h4>
+          {{/if}}
+          {{#unless static-backdrop}}
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-          {{/if}}
-          {{#if modal-title}}
-            <h4 id="{{modal-id}}-title" class="modal-title {{modal-title-classes}}">{{modal-title}}</h4>
-          {{/if}}
+          {{/unless}}
         </div>
-      {{/if}}
+      {{/unless}}
       <form {{action "formAction" on="submit" preventDefault=true}}>
         <div class="modal-body {{modal-body-classes}}">
           <div class="loading">
