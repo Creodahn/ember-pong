@@ -1,5 +1,5 @@
-import { scheduleOnce } from '@ember/runloop';
 import Component from '@ember/component';
+import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import $ from 'jquery';
 import padScore from 'ember-pong/utils/pad-score';
@@ -8,22 +8,31 @@ export default Component.extend({
   // attributes
   movePaddle: service(),
   tagName: '',
+  // computed properties
+  courtCenterX: computed('ballRadius', function() {
+    const radius = this.get('ballRadius');
+
+    return this.get('width') / 2 - radius / 2;
+  }),
+  courtCenterY: computed('ballRadius', function() {
+    const radius = this.get('ballRadius');
+
+    return this.get('height') / 2 - radius / 2;
+  }),
   // lifecycle hooks
   didInsertElement() {
-    scheduleOnce('afterRender', () => {
-      const canvas = $(`#${this.get('id')}`)[0],
-            canvasContext = canvas.getContext('2d');
+    const canvas = $(`#${this.get('id')}`)[0],
+          canvasContext = canvas.getContext('2d');
 
-      this.aiSetup();
-      this.ballSetup();
-      this.set('context', canvasContext);
-      this.playerSetup();
+    this.aiSetup();
+    this.ballSetup();
+    this.set('context', canvasContext);
+    this.playerSetup();
 
-      setInterval(() => {
-        this.movement();
-        this.drawCanvas();
-      }, 1000 / this.get('fps'));
-    });
+    setInterval(() => {
+      this.movement();
+      this.drawCanvas();
+    }, 1000 / this.get('fps'));
   },
   // functions
   aiMove() {
@@ -58,15 +67,13 @@ export default Component.extend({
     this.set('aiPaddleY', this.get('height') / 2 - this.get('paddleHeight') / 2);
     this.set('aiPaddleLeft', this.get('width') - this.get('paddleWidth'));
     this.set('aiPaddleSpeed', 6);
-    this.set('aiScore', 0);
+    this.set('aiScore', 9);
     this.set('aiScoreX', this.get('width') - 100);
     this.set('aiScoreY', 100);
   },
   ballReset() {
-    const radius = this.get('ballRadius');
-
-    this.set('ballCenterX', this.get('width') / 2 - radius / 2);
-    this.set('ballCenterY', this.get('height') / 2 - radius / 2);
+    this.set('ballCenterX', this.get('courtCenterX'));
+    this.set('ballCenterY', this.get('courtCenterY'));
 
     this.set('ballSpeedX', this.randomizeSpeed());
     this.set('ballSpeedY', this.randomizeSpeed());
@@ -237,5 +244,17 @@ export default Component.extend({
           score = this.get(label);
 
     this.set(label, score + 1);
+
+    if(score === 9) {
+      this.stopGame(player);
+    }
+  },
+  stopGame(player) {
+    this.set('fps', 0);
+    this.set('ballCenterX', this.get('courtCenterX'));
+    this.set('ballCenterY', this.get('courtCenterY'));
+    this.set('ballSpeedX', 0);
+    this.set('ballSpeedY', 0);
+    this.win(player);
   }
 });
