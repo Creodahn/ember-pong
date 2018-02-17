@@ -1,17 +1,49 @@
 import Service from '@ember/service';
+import { run } from '@ember/runloop';
 import $ from 'jquery';
 
 export default Service.extend({
-  bindToMouse(id) {
-    $(`#${id}`).get(0).addEventListener('mousemove', (e) => {
-      const canvas = $(`#${id}`);
+  paddleSpeed: 6,
+  bindToKeyboard() {
+    $('body').on('keydown', (e) => {
+      const key = e.keyCode;
+      let pos = this.get('dataYPos');
 
-      this.set('dataYPos', this.calculateMouseYPos($(canvas).get(0).getBoundingClientRect(), e));
+      switch(true) {
+        case key === 38:
+          // move up
+          pos -= 6;
+          break;
+        case key === 40:
+          // move down
+          pos += 6;
+          break;
+      }
+
+      console.log(pos);
+
+      run(() => {
+        this.set('dataYPos', pos);
+      });
     });
   },
-  calculateMouseYPos(rect, e) {
-    const doc = document.documentElement;
+  calculatePaddleY(ball, width, paddleYStart) {
+    const ballX = ball.x,
+          ballY = ball.y,
+          speed = this.get('paddleSpeed') * Math.abs((paddleYStart - ballY) / 100);
+    let paddleYEnd = paddleYStart;
 
-    return e.clientY - rect.top - doc.scrollTop;
-  }
+    if(ballX >= width * 0.75) {
+      switch(true) {
+        case paddleYStart < ballY:
+          paddleYEnd += speed;
+          break;
+        case paddleYStart > ballY:
+          paddleYEnd -= speed;
+          break;
+      }
+    }
+
+    return paddleYEnd;
+  },
 });

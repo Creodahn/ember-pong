@@ -39,20 +39,12 @@ export default Component.extend({
   },
   // functions
   aiMove() {
-    let aiC = this.get('aiPaddleY');
-    const bY = this.get('ballCenterY'),
-          speed = this.get('aiPaddleSpeed') * Math.abs((aiC - bY) / 100);
-
-    if(this.get('ballCenterX') >= this.get('width') * 0.75) {
-      switch(true) {
-        case aiC < bY:
-          aiC += speed;
-          break;
-        case aiC > bY:
-          aiC -= speed;
-          break;
-      }
-    }
+    const aiC = this.get('movePaddle').calculatePaddleY({
+      x: this.get('ballCenterX'),
+      y: this.get('ballCenterY')
+    },
+    this.get('width'),
+    this.get('aiPaddleY'));
 
     switch(true) {
       case (aiC + this.get('paddleHeight') <= this.get('height') && aiC >= 0):
@@ -69,7 +61,6 @@ export default Component.extend({
   aiSetup() {
     this.set('aiPaddleY', this.get('height') / 2 - this.get('paddleHeight') / 2);
     this.set('aiPaddleLeft', this.get('width') - this.get('paddleWidth'));
-    this.set('aiPaddleSpeed', 6);
     this.set('aiScore', 0);
     this.set('aiScoreX', this.get('width') - 100);
     this.set('aiScoreY', 100);
@@ -102,16 +93,16 @@ export default Component.extend({
   },
   drawCanvas() {
     const halfHeight = this.get('paddleHeight') / 2,
-          newPlayerPaddelY = this.get('movePaddle.dataYPos') - halfHeight;
+          newPlayerPaddleY = this.get('movePaddle.dataYPos');
 
     switch(true) {
-      case (newPlayerPaddelY + this.get('paddleHeight') <= this.get('height') && this.get('movePaddle.dataYPos') - halfHeight >= 0):
-        this.set('playerPaddleY', newPlayerPaddelY);
+      case (newPlayerPaddleY + this.get('paddleHeight') <= this.get('height') && this.get('movePaddle.dataYPos') - halfHeight >= 0):
+        this.set('playerPaddleY', newPlayerPaddleY);
         break;
       case this.get('movePaddle.dataYPos') - halfHeight < 0:
         this.set('playerPaddleY', 0);
         break;
-      case newPlayerPaddelY + this.get('paddleHeight') > this.get('height'):
+      case newPlayerPaddleY + this.get('paddleHeight') > this.get('height'):
         this.set('playerPaddleY', this.get('height') - this.get('paddleHeight'));
         break;
     }
@@ -230,7 +221,8 @@ export default Component.extend({
     }
   },
   playerSetup() {
-    this.get('movePaddle').bindToMouse(this.get('id'));
+    this.set('movePaddle.dataYPos', this.get('height') / 2 - this.get('paddleHeight') / 2);
+    this.get('movePaddle').bindToKeyboard();
     this.set('playerScore', 0);
     this.set('playerScoreX', 30);
     this.set('playerScoreY', 100);
