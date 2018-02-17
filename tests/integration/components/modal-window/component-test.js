@@ -1,24 +1,19 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('modal-window', 'Integration | Component | modal window', {
-  integration: true
-});
+module('Integration | Component | modal window', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  test('it renders', async function(assert) {
 
-  this.render(hbs`{{modal-window}}`);
+    await render(hbs`
+      {{#modal-window static-backdrop=true}}
+        template block text
+      {{/modal-window}}
+    `);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#modal-window}}
-      template block text
-    {{/modal-window}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+    assert.equal(this.$().text().replace(/\s+/gm, ' ').trim(), 'template block text');
+  });
 });

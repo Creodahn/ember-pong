@@ -7,21 +7,21 @@ module('Integration | Component | game canvas', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function(assert) {
+    this.set('win', function() {
+      // noop
+    });
 
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });
+    await render(hbs`{{game-canvas
+      id="game-canvas"
+      height=600
+      fps=60
+      paddleHeight=100
+      paddleWidth=10
+      speed=5
+      width=800
+      win=(action win)
+    }}`);
 
-    await render(hbs`{{game-canvas}}`);
-
-    assert.equal(this.$().text().trim(), '');
-
-    // Template block usage:
-    await render(hbs`
-      {{#game-canvas}}
-        template block text
-      {{/game-canvas}}
-    `);
-
-    assert.equal(this.$().text().trim(), 'template block text');
+    assert.ok(this.$('canvas'));
   });
 });

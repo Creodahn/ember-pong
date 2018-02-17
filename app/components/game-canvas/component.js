@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import Ember from 'ember';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import $ from 'jquery';
@@ -29,10 +30,12 @@ export default Component.extend({
     this.set('context', canvasContext);
     this.playerSetup();
 
-    this.set('timer', setInterval(() => {
-      this.movement();
-      this.drawCanvas();
-    }, 1000 / this.get('fps')));
+    if(!Ember.testing) {
+      this.set('timer', setInterval(() => {
+        this.movement();
+        this.drawCanvas();
+      }, 1000 / this.get('fps')));
+    }
   },
   // functions
   aiMove() {

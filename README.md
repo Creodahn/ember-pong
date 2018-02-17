@@ -20,7 +20,7 @@ You will need the following things properly installed on your computer.
 
 * `git clone <repository-url>` this repository
 * `cd ember-pong`
-* `npm install`
+* `yarn install`
 
 ## Running / Development
 
@@ -37,6 +37,11 @@ Make use of the many generators for code, try `ember help generate` for more det
 * `ember test`
 * `ember test --server`
 
+### Linting
+
+* `yarn lint:js`
+* `yarn lint:js --fix`
+
 ### Building
 
 * `ember build` (development)
@@ -48,7 +53,7 @@ Specify what it takes to deploy your app.
 
 ## Further Reading / Useful Links
 
-* [ember.js](http://emberjs.com/)
+* [ember.js](https://emberjs.com/)
 * [ember-cli](https://ember-cli.com/)
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)

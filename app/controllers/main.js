@@ -6,8 +6,6 @@ export default Controller.extend({
     win(player) {
       this.set('winner', player);
 
-      console.log(player);
-
       $('#win-modal').modal('show');
     }
   }
